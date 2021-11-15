@@ -4,7 +4,14 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  // your config
+  apiKey: "AIzaSyBK4_ckiJfuDrGH2naN07SmruemW2EjRPM",
+  authDomain: "webrtc-dd6e4.firebaseapp.com",
+  databaseURL: "https://webrtc-dd6e4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "webrtc-dd6e4",
+  storageBucket: "webrtc-dd6e4.appspot.com",
+  messagingSenderId: "143154930393",
+  appId: "1:143154930393:web:1465b41294f95cb5f8d4c8",
+  measurementId: "G-XV6LN18P27"
 };
 
 if (!firebase.apps.length) {
@@ -64,9 +71,9 @@ webcamButton.onclick = async () => {
 // 2. Create an offer
 callButton.onclick = async () => {
   // Reference Firestore collections for signaling
-  const callDoc = firestore.collection('calls').doc();
-  const offerCandidates = callDoc.collection('offerCandidates');
-  const answerCandidates = callDoc.collection('answerCandidates');
+  const callDoc = firestore.collection('rooms').doc();
+  const offerCandidates = callDoc.collection('callerCandidates');
+  const answerCandidates = callDoc.collection('calleeCandidates');
 
   callInput.value = callDoc.id;
 
@@ -111,9 +118,9 @@ callButton.onclick = async () => {
 // 3. Answer the call with the unique ID
 answerButton.onclick = async () => {
   const callId = callInput.value;
-  const callDoc = firestore.collection('calls').doc(callId);
-  const answerCandidates = callDoc.collection('answerCandidates');
-  const offerCandidates = callDoc.collection('offerCandidates');
+  const callDoc = firestore.collection('rooms').doc(callId);
+  const answerCandidates = callDoc.collection('calleeCandidates');
+  const offerCandidates = callDoc.collection('callerCandidates');
 
   pc.onicecandidate = (event) => {
     event.candidate && answerCandidates.add(event.candidate.toJSON());
